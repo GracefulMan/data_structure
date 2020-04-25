@@ -9,19 +9,19 @@ private:
     struct node{
         T data;
         node *next;
-        node():next(NULL){}
-        node(T data, node *n=NULL):data(data), next(n){}
+        node():next(nullptr){}
+        node(T data, node *n=nullptr):data(data), next(n){}
     };
     node *front;
     node *rear;
 public:
-    linkQueue():front(NULL), rear(NULL){}
+    linkQueue():front(nullptr), rear(nullptr){}
     bool isEmpty()const{
-        return front == NULL;
+        return front == nullptr;
     }
     void enQueue(const T &x){
         node *tmp = new node (x);
-        if(rear == NULL)
+        if(rear == nullptr)
             front = rear = tmp;
         else
         {
@@ -33,7 +33,7 @@ public:
         node *tmp = front;
         front = front->next;
         T data = tmp->data;
-        if(front == NULL) rear = NULL;
+        if(front == nullptr) rear = nullptr;
         delete tmp;
         return data;
     }
@@ -42,7 +42,7 @@ public:
     }
     ~linkQueue(){
         node *tmp;
-        while (front!=NULL){
+        while (front!= nullptr){
             tmp = front;
             front =front->next;
             delete tmp;
