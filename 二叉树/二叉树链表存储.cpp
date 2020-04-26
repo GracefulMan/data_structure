@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <stack>
 using namespace std;
 
 template <class  T>
@@ -47,6 +48,7 @@ private:
             cout<<t->data<<'\t';
         }
     }
+
 
 
 
@@ -115,6 +117,68 @@ public:
             if(rdata!=flag) que.push(current->right = new node(rdata));
         }
     }
+    // 前序遍历的非递归实现
+    void preOrderWithoutRecursive()const {
+        stack<node*> data_stack;
+        node *current = root;
+        data_stack.push(current);
+        while (!data_stack.empty()){
+            current = data_stack.top();
+            cout<<current->data<<'\t';
+            data_stack.pop();
+            if(current->right) data_stack.push(current->right);
+            if(current->left) data_stack.push(current->left);
+        }
+    }
+    void midOrderWithoutRecursive()const {
+        struct newNode{
+            node *Node;
+            int num;
+            newNode(node *p):Node(p), num(0){}
+        };
+        stack<newNode> data_stack;
+        newNode current(root);
+        data_stack.push(current);
+        while (!data_stack.empty()){
+            current = data_stack.top();
+            data_stack.pop();
+            if(++current.num == 2){
+                cout<<current.Node->data<<'\t';
+                if(current.Node->right)
+                    data_stack.push(newNode(current.Node->right));
+            } else{
+                data_stack.push(current);
+                if(current.Node->left)
+                    data_stack.push(newNode(current.Node->left));
+            }
+        }
+    }
+
+    void postOrderWithoutRecursive()const {
+        struct newNode {
+            node * Node;
+            int num;
+            newNode(node *p):Node(p),num(0){}
+        };
+        stack<newNode> data_stack;
+        newNode current(root);
+        data_stack.push(current);
+        while (!data_stack.empty()){
+            current = data_stack.top();
+            data_stack.pop();
+            if(++current.num == 3){
+                cout<<current.Node->data<<'\t';
+                continue;
+            }
+            data_stack.push(current);
+            if(current.num == 1){
+                if(current.Node->left) data_stack.push(newNode(current.Node->left));
+            } else{
+                if(current.Node->right) data_stack.push(newNode(current.Node->right));
+            }
+        }
+
+    }
     ~BinaryTree(){
         clear(root);
     }
@@ -129,12 +193,22 @@ int main(){
     cout<<"前序遍历:";
     testTree.preOrder();
     cout<<endl;
+    cout<<"前序遍历(非递归实现):";
+    testTree.preOrderWithoutRecursive();
+    cout<<endl;
 
     cout<<"中序遍历:";
     testTree.midOrder();
     cout<<endl;
+    cout<<"中序遍历(非递归实现):";
+    testTree.midOrderWithoutRecursive();
+    cout<<endl;
 
     cout<<"后序遍历:";
     testTree.postOrder();
+    cout<<endl;
+    cout<<"后序遍历(非递归实现):";
+
+    testTree.postOrderWithoutRecursive();
     cout<<endl;
 }
